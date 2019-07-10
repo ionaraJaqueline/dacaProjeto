@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<f:metadata>
+		<o:viewParam name="pedido" value="#{pedidoEdit.pedido}" />
+		<f:viewAction action="#{pedidoEdit.init()}" />
+	</f:metadata>
+
+	<ui:define name="title">
+		Pedido create/edit
+	</ui:define>
+
+	<ui:define name="content">
+	
+		<p:fieldset legend="Adicionar Item">	
+	
+		<h:form id="formEdit">
+
+			<ui:include src="/WEB-INF/templates/_campos_edit_pedido.xhtml" />	
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<p:commandButton id="botaoSubmeter" action="#{pedidoEdit.savePedido}" value="Submit" update="@form" icon="fa fa-save" />
+				<p:button id="botaoCancelar" outcome="/paginas/protegido/pedido/index.xhtml" value="Cancel" icon="fa fa-remove" />
+			</p:panelGrid>
+			
+			<p:defaultCommand id="defaultCommandId" target="formEdit:botaoSubmeter" />
+		</h:form>
+	</p:fieldset>
+	</ui:define>
+</ui:composition>
+</html>

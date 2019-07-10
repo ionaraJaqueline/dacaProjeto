@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+	<p:panelGrid columns="2" styleClass="ui-noborder">
+		<f:facet name="header">Produto</f:facet>
+
+		<p:outputLabel value="Id:" rendered="#{produtoEdit.edicaoDeProduto}" />
+		<p:outputLabel value="#{produtoEdit.produto.id}"
+			rendered="#{produtoEdit.edicaoDeProduto}" />
+
+		<p:outputLabel for="nome" value="Nome:" />
+		<p:inputText id="nome" value="#{produtoEdit.produto.nome}"
+			label="Nome" />
+
+		<p:outputLabel for="descricao" value="Descricao:" />
+		<p:inputText id="descricao" value="#{produtoEdit.produto.descricao}"
+			label="Descricao" />
+
+		<p:outputLabel for="dataDeValidade" value="Data De Validade:" />
+		<ui:include src="/WEB-INF/templates/_date.xhtml">
+			<ui:param name="id" value="dataDeValidade" />
+			<ui:param name="value"
+				value="#{produtoEdit.produto.dataDeValidade}" />
+			<ui:param name="label" value="DataDeValidade" />
+			<ui:param name="required" value="#{true}" />
+		</ui:include>
+		
+		<p:outputLabel for="dataEntrada" value="Data Entrada:" />
+		<ui:include src="/WEB-INF/templates/_date.xhtml">
+			<ui:param name="id" value="dataEntrada" />
+			<ui:param name="value"
+				value="#{produtoEdit.produto.dataEntrada}" />
+			<ui:param name="label" value="DataEntrada" />
+			<ui:param name="required" value="#{true}" />
+		</ui:include>
+		
+		
+
+		<p:outputLabel for="tipoDeProduto" value="Tipo De Produto:" />
+		<p:selectOneMenu id="tipoDeProduto" value="#{produtoEdit.produto.tipoDeProduto}" label="TipoDeProduto" required="true">
+			<f:selectItem itemLabel="Selecione" itemValue="#{null}"	itemDisabled="true" />
+			<f:selectItems value="#{produtoEdit.getTiposDeProdutos()}" var="g" itemLabel="#{g.nome}" itemValue="#{g}" />
+		</p:selectOneMenu>
+
+
+	</p:panelGrid>
+
+</ui:composition>
+</html>

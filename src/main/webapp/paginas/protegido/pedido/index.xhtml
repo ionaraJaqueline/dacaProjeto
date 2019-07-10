@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/__commonLayout.xhtml">
+
+	<!-- How to pass parameter to JSF 2.x template file: -->
+	<!-- https://www.mkyong.com/jsf2/how-to-pass-parameters-to-jsf-2-0-template-file/ -->
+	
+
+	<ui:define name="title">
+		Manage Pedido
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:fieldset legend="Filtros">
+
+			<h:form id="formFilter">
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<f:facet name="header">Pedido</f:facet>
+
+					<p:outputLabel value="Inicio Data Do Pedido: " for="itInicioDataDoPedidoFilter" />
+					<ui:include src="/WEB-INF/templates/_date.xhtml">
+						<ui:param name="id" value="itInicioDataDoPedidoFilter" />
+						<ui:param name="value"	value="#{managePedido.pedidoFilter.inicioDataDoPedido}" />
+						<ui:param name="label" value="Inicio Data Do Pedido" />
+						<ui:param name="style" value="width:350px" />
+					</ui:include>
+
+					<p:outputLabel value="Fim Data Data Do Pedido: " for="itFimDataDoPedidoFilter" />
+					<ui:include src="/WEB-INF/templates/_date.xhtml">
+						<ui:param name="id" value="itFimDataDoPedidoFilter" />
+						<ui:param name="value" value="#{managePedido.pedidoFilter.inicioDataDoPedido}" />
+						<ui:param name="label" value="Fim Data Do Pedido" />
+						<ui:param name="style" value="width:350px" />
+					</ui:include>
+									
+					<p:outputLabel value="TipoDePagamento:" for="tipoDePagamento" />
+					<p:selectOneMenu id="tipoDePagamento"	value="#{managePedido.pedidoFilter.tipoDePagamento}" label="TipoDePagamento">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}" />
+						<f:selectItems value="#{managePedido.getTiposDePagamentos()}" var="g"	itemLabel="#{g.nome}" itemValue="#{g}" />
+					</p:selectOneMenu>
+
+					<p:commandButton id="btnFiltrarBotao" value="Search" action="#{managePedido.filtrar()}" update=":formFilter :dataTablePedido" icon="fa fa-search" />
+					<p:commandButton id="btnLimparBotao" value="Clean" action="#{managePedido.limpar()}" update=":formFilter" process="@this" icon="fa fa-remove">
+						
+					</p:commandButton>
+				</p:panelGrid>
+
+			</h:form>
+		</p:fieldset>
+
+		<p:fieldset legend="Resultado">
+
+			<p:dataTable id="dataTablePedido" var="pedido" value="#{managePedido.pedidos}" emptyMessage="Nenhum registro encontrado."
+			    rows="5" paginator="true"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<p:column headerText="ID">
+					<h:outputText value="#{pedido.id}" />
+				</p:column>
+				<p:column headerText="TipoDePagamento">
+					<h:outputText value="#{pedido.tipoDePagamento.nome}" />
+				</p:column>
+				
+				<p:column headerText="DataDoPedido">
+					<h:outputText value="#{pedido.dataDoPedido}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Operations" width="300">
+					<p:link id="editPedido" outcome="/paginas/protegido/pedido/admin/pedido_edit.xhtml"	value="Edit Pedido...">
+						<f:param name="pedido" value="#{pedido.id}" />
+					</p:link>
+					<p:tooltip id="toolTipEditPedido" for="editPedido" value="Edit pedido..." position="top" />
+							
+
+					<p:commandButton id="deletePedido" icon="fa fa-remove" action="#{managePedido.delete(pedido)}">
+						<p:confirm header="Confirmação!" message="Do you want to delete '#{pedido.itemDePedido}'?"
+							icon="fa fa-remove" />
+					</p:commandButton>
+					<p:tooltip id="toolTipDeletePedido" for="deletePedido"	value="Delete" position="top" />
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+
+
+
+
+
+
+	</ui:define>
+
+</ui:composition>
+</html>
